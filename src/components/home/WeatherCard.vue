@@ -1,14 +1,34 @@
 <script setup lang="ts">
+import type { Location } from '@/types'
 import { computed } from 'vue'
 
 const props = defineProps<{
-  mode: {
-    type: string
-    required: true
-  }
+  location: Location | null
 }>()
 
-const cardMode = computed(() => ('night' === props.mode ? 'wa-card--night' : 'wa-card--day'))
+const cardMode = computed(() => 'wa-card--night') //TODO class based on time of day
+const currentLocation = computed(() =>
+  props.location?.isMyLocation
+    ? `${props.location?.name}, ${props.location?.sys.country}`
+    : `${props.location?.sys.country}`,
+)
+const currentWeather = computed(() => props.location?.weather[0]?.main)
+
+const currentTemperature = computed(() => {
+  const temp = props.location?.main.temp ?? 0
+  return Math.round(temp - 273.15)
+})
+const currentLowTemperature = computed(() => {
+  const temp = props.location?.main.temp_max ?? 0
+  return Math.round(temp - 273.15)
+})
+const currentHighTemperature = computed(() => {
+  const temp = props.location?.main.temp_min ?? 0
+  return Math.round(temp - 273.15)
+})
+const currentLocationLabel = computed(() => {
+  return props.location?.isMyLocation ? 'My Location' : props.location?.name
+})
 </script>
 
 <template>
@@ -16,18 +36,18 @@ const cardMode = computed(() => ('night' === props.mode ? 'wa-card--night' : 'wa
     <div class="wa-card flex flex-col text-white w-full justify-between py-[7px] px-[15px]">
       <div class="flex flex-row justify-between">
         <div>
-          <h2 class="font-bold text-[25px] leading-[100%]">My Location</h2>
-          <p class="wa-location-info">Bangsar South</p>
+          <h2 class="font-bold text-[25px] leading-[100%]">{{ currentLocationLabel }}</h2>
+          <p class="wa-location-info">{{ currentLocation }}</p>
         </div>
         <div>
-          <p class="wa-temperature">24<sup>°</sup></p>
+          <p class="wa-temperature">{{ currentTemperature }}<sup>°</sup></p>
         </div>
       </div>
       <div class="flex flex-row justify-between">
-        <div>Moderate Rain</div>
+        <div>{{ currentWeather }}</div>
         <div class="flex flex-row gap-2">
-          <p>H:29<sup>°</sup></p>
-          <p>L:15<sup>°</sup></p>
+          <p>H:{{ currentLowTemperature }}<sup>°</sup></p>
+          <p>L:{{ currentHighTemperature }}<sup>°</sup></p>
         </div>
       </div>
     </div>

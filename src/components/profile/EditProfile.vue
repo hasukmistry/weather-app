@@ -10,9 +10,9 @@ import IconCountry from '@/components/icons/IconCountry.vue'
       class="wa-profile-header flex flex-row items-start px-4 py-8 min-h-[240px] bg-no-repeat bg-cover bg-center"
     >
       <div class="mt-2 shrink-0">
-        <a href="/">
+        <router-link to="/">
           <IconBack />
-        </a>
+        </router-link>
       </div>
       <div class="flex flex-1 flex-col text-center justify-center">
         <h1 class="mb-6 font-medium text-[20px] leading-[28px]">Edit Profile</h1>

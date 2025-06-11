@@ -1,37 +1,117 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+import type { Location } from '@/types'
+import { useLocationsStore } from '@/stores/locations'
+import { useRouter } from 'vue-router'
+
+const locationsStore = useLocationsStore()
+const router = useRouter()
+
 import IconBack from '@/components/icons/IconBack.vue'
 import IconRemove from '@/components/icons/IconRemove.vue'
+import IconAdd from '@/components/icons/IconAdd.vue'
 import IconRefresh from '@/components/icons/IconRefresh.vue'
 import IconWeatherModerateRain from '@/components/icons/IconWeatherModerateRain.vue'
+
+const props = defineProps<{
+  location: Location | null
+}>()
+
+const emit = defineEmits<{
+  (e: 'loadingStart', val: boolean): void
+  (e: 'loadingDone', val: boolean): void
+}>()
+
+const currentLocation = computed(() => `${props.location?.name}, ${props.location?.sys.country}`)
+
+const localTimestamp = computed(() => {
+  if (!props.location) return ''
+  const date = new Date(props.location.dt * 1000)
+  return date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+  })
+})
+const currentTemperature = computed(() => {
+  const temp = props.location?.main.temp ?? 0
+  return Math.round(temp - 273.15)
+})
+const currentWeather = computed(() => props.location?.weather[0]?.main)
+const lastUpdated = computed(() => {
+  if (!props.location) return ''
+  const date = new Date(props.location?.lastUpdated)
+  return date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  })
+})
+const isLocationAdded = computed(
+  () => locationsStore.getLocationById(<number>props.location?.id) !== undefined,
+)
+const addLocation = () => {
+  locationsStore.addSearchedLocation(<number>props.location?.id)
+  router.push('/')
+}
+const removeLocation = () => {
+  locationsStore.removeFromLocationList(<number>props.location?.id)
+  router.push('/')
+}
+const refreshLocation = async () => {
+  emit('loadingStart', true)
+  try {
+    locationsStore.removeFromLocationList(<number>props.location?.id)
+    const searchedLocation = await locationsStore.fetchLocation(
+      <number>props.location?.coord?.lat,
+      <number>props.location?.coord?.lon,
+    )
+    locationsStore.addSearchedLocation(<number>searchedLocation?.id)
+    locationsStore.clearSearchedLocations()
+  } catch (error) {
+    console.error('Error refreshing location:', error)
+  } finally {
+    emit('loadingDone', true)
+  }
+}
 </script>
 
 <template>
   <div
+    v-if="location"
     class="wa-location-info text-white flex flex-row items-start px-4 py-8 bg-no-repeat bg-cover bg-center"
   >
     <div class="shrink-0">
-      <a href="/">
+      <router-link to="/">
         <IconBack />
-      </a>
+      </router-link>
     </div>
     <div class="flex flex-1 flex-col text-center justify-center">
-      <h1 class="mt-1 mb-6 text-[14px] font-medium leading-[100%]">Milan, Italy</h1>
-      <p class="mb-6 font-normal leading-[100%]">Monday, 20 December 2021</p>
+      <h1 class="mt-1 mb-6 text-[14px] font-medium leading-[100%]">{{ currentLocation }}</h1>
+      <p class="mb-6 font-normal leading-[100%]">{{ localTimestamp }}</p>
       <div class="wa-weather-icon flex items-center justify-center">
         <IconWeatherModerateRain />
       </div>
-      <p class="mb-2 font-normal text-[20px] leading-[100%]">24<sup>°</sup> C</p>
-      <p class="mb-8 font-bold text-[20px] leading-[100%]">Moderate Rain</p>
+      <p class="mb-2 font-normal text-[20px] leading-[100%]">
+        {{ currentTemperature }}<sup>°</sup> C
+      </p>
+      <p class="mb-8 font-bold text-[20px] leading-[100%]">{{ currentWeather }}</p>
 
       <div class="flex flex-row items-center justify-center gap-1">
-        <p class="font-normal leading-[100%]">Last Update 11:00 AM</p>
-        <a href="#"><IconRefresh /></a>
+        <p class="font-normal leading-[100%]">Last Update {{ lastUpdated }}</p>
+        <button @click.prevent="refreshLocation">
+          <IconRefresh />
+        </button>
       </div>
     </div>
     <div class="shrink-0">
-      <a href="#">
+      <button v-if="isLocationAdded && !location?.isMyLocation" @click.prevent="removeLocation">
         <IconRemove />
-      </a>
+      </button>
+      <button v-else-if="!isLocationAdded" @click.prevent="addLocation">
+        <IconAdd />
+      </button>
     </div>
   </div>
 </template>
