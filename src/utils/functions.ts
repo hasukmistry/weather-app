@@ -22,3 +22,9 @@ export const isDaytime = (timestamp: number, timezone: number): boolean => {
   // Daytime between 6:00 (inclusive) and 18:00 (exclusive)
   return localHour >= 6 && localHour < 18
 }
+
+export const getTemperatureInCelcius = (temperature: number): string => {
+  const temp = temperature ?? 0
+
+  return Math.round(temp - 273.15).toString()
+}

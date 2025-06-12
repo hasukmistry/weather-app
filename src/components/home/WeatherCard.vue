@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Location } from '@/types'
-import { isDaytime } from '@/utils/functions'
+import { isDaytime, getTemperatureInCelcius } from '@/utils/functions'
 
 const props = defineProps<{
   location: Location | null
@@ -22,18 +22,15 @@ const currentLocation = computed(() =>
 const currentWeather = computed(() => props.location?.weather[0]?.main)
 
 const currentTemperature = computed(() => {
-  const temp = props.location?.main.temp ?? 0
-  return Math.round(temp - 273.15)
+  return getTemperatureInCelcius(props.location?.main.temp ?? 0)
 })
 
 const currentLowTemperature = computed(() => {
-  const temp = props.location?.main.temp_max ?? 0
-  return Math.round(temp - 273.15)
+  return getTemperatureInCelcius(props.location?.main.temp_max ?? 0)
 })
 
 const currentHighTemperature = computed(() => {
-  const temp = props.location?.main.temp_min ?? 0
-  return Math.round(temp - 273.15)
+  return getTemperatureInCelcius(props.location?.main.temp_min ?? 0)
 })
 
 const currentLocationLabel = computed(() => {
