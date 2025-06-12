@@ -28,3 +28,19 @@ export const getTemperatureInCelcius = (temperature: number): string => {
 
   return Math.round(temp - 273.15).toString()
 }
+
+export const getFormattedHourlyTime = (datetimeStr: string, timezone: number): string => {
+  // Parse as UTC date
+  const utcDate = new Date(datetimeStr.replace(' ', 'T') + 'Z')
+
+  // Shift by timezone offset
+  const localDate = new Date(utcDate.getTime() + timezone * 1000)
+
+  // Format using UTC to avoid local timezone interference
+  return localDate.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+    timeZone: 'UTC',
+  })
+}

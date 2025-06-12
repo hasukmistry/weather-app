@@ -1,28 +1,28 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { ForecastList } from '@/types'
-import { getWeatherIconClass } from '@/utils/functions'
+import {
+  getWeatherIconClass,
+  getTemperatureInCelcius,
+  getFormattedHourlyTime,
+} from '@/utils/functions'
 
 const props = defineProps<{
   forecast: ForecastList | null
+  timezone: number
 }>()
 
 const currentTemperature = computed(() => {
-  const temp = props.forecast?.main.temp ?? 0
-  return Math.round(temp - 273.15)
+  return getTemperatureInCelcius(props.forecast?.main.temp ?? 0)
 })
+
 const currentFormattedTime = computed(() => {
   if (!props.forecast) return ''
-  const date = new Date(props.forecast?.dt_txt)
-  return date.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true,
-  })
+  return getFormattedHourlyTime(props.forecast?.dt_txt, props.timezone)
 })
+
 const currentWeatherIconClass = computed(() => {
   const weatherDescription = props.forecast?.weather[0]?.description?.toLowerCase()
-
   return getWeatherIconClass(<string>weatherDescription)
 })
 </script>

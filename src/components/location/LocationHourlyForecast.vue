@@ -2,7 +2,7 @@
 import type { Location } from '@/types'
 import LocationHourlyCard from '@/components/location/LocationHourlyCard.vue'
 
-const props = defineProps<{
+defineProps<{
   location: Location | null
 }>()
 </script>
@@ -18,7 +18,7 @@ const props = defineProps<{
         :key="forecast.dt"
         class="flex flex-1 flex-col max-w-[120px] py-3 px-[14px] bg-[#f5f5f5] rounded-sm items-center text-center"
       >
-        <LocationHourlyCard :forecast="forecast" />
+        <LocationHourlyCard :forecast="forecast" :timezone="location?.timezone" />
       </li>
     </ul>
   </div>
