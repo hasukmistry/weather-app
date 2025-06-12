@@ -3,6 +3,11 @@ import { computed } from 'vue'
 import type { Location } from '@/types'
 import { useLocationsStore } from '@/stores/locations'
 import { useRouter } from 'vue-router'
+import {
+  getTemperatureInCelcius,
+  getFormattedFullDate,
+  getLastUpdatedTime,
+} from '@/utils/functions'
 
 const locationsStore = useLocationsStore()
 const router = useRouter()
@@ -26,40 +31,35 @@ const currentLocation = computed(() => `${props.location?.name}, ${props.locatio
 
 const localTimestamp = computed(() => {
   if (!props.location) return ''
-  const date = new Date(props.location.dt * 1000)
-  return date.toLocaleDateString('en-US', {
-    weekday: 'long',
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric',
-  })
+  return getFormattedFullDate(props.location.dt, props.location.timezone)
 })
+
 const currentTemperature = computed(() => {
-  const temp = props.location?.main.temp ?? 0
-  return Math.round(temp - 273.15)
+  return getTemperatureInCelcius(props.location?.main.temp ?? 0)
 })
+
 const currentWeather = computed(() => props.location?.weather[0]?.main)
 const currentWeatherDescription = computed(() => <string>props.location?.weather[0]?.description)
+
 const lastUpdated = computed(() => {
   if (!props.location) return ''
-  const date = new Date(<number>props.location?.lastUpdated)
-  return date.toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  })
+  return getLastUpdatedTime(<number>props.location?.lastUpdated)
 })
+
 const isLocationAdded = computed(
   () => locationsStore.getLocationById(<number>props.location?.id) !== undefined,
 )
+
 const addLocation = () => {
   locationsStore.addSearchedLocation(<number>props.location?.id)
   router.push('/')
 }
+
 const removeLocation = () => {
   locationsStore.removeFromLocationList(<number>props.location?.id)
   router.push('/')
 }
+
 const refreshLocation = async () => {
   emit('loadingStart', true)
   try {

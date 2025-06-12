@@ -44,3 +44,28 @@ export const getFormattedHourlyTime = (datetimeStr: string, timezone: number): s
     timeZone: 'UTC',
   })
 }
+
+export const getFormattedFullDate = (timestamp: number, timezone: number): string => {
+  // Convert timestamp to milliseconds and apply timezone offset
+  const localDate = new Date((timestamp + timezone) * 1000)
+
+  // Format using UTC to avoid local timezone interference
+  return localDate.toLocaleDateString('en-US', {
+    weekday: 'long',
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  })
+}
+
+export const getLastUpdatedTime = (timestamp: number): string => {
+  const localDate = new Date(timestamp)
+
+  // Format using UTC to avoid local timezone interference
+  return localDate.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  })
+}
