@@ -8,13 +8,13 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div v-if="location?.hourlyForecast" class="px-4 py-8">
+  <div v-if="location?.hourlyForecast && location?.hourlyForecast.length" class="px-4 pt-8">
     <div>
       <h2 class="font-medium text-[20px] leading-[100%] mb-6">Hourly Forecast</h2>
     </div>
-    <ul class="flex flex-row items-center gap-4">
+    <ul v-if="location.hourlyForecast.length" class="flex flex-row items-center gap-4">
       <li
-        v-for="forecast in location.hourlyForecast"
+        v-for="forecast in location.hourlyForecast?.slice(0, 4)"
         :key="forecast.dt"
         class="flex flex-1 flex-col max-w-[120px] py-3 px-[14px] bg-[#f5f5f5] rounded-sm items-center text-center"
       >
