@@ -135,14 +135,14 @@ const submitProfile = () => {
     <button
       v-if="isReadOnly"
       @click.prevent="() => (isReadOnly = false)"
-      class="flex justify-center text-white text-[18px] leading-[28px] font-[590px] py-[12.5px] uppercase rounded-lg bg-[#2E3A5A]"
+      class="flex justify-center cursor-pointer text-white text-[18px] leading-[28px] font-[590px] py-[12.5px] uppercase rounded-lg bg-[#2E3A5A]"
     >
       Edit
     </button>
     <button
       v-else
       @click.prevent="submitProfile"
-      class="flex justify-center text-white text-[18px] leading-[28px] font-[590px] py-[12.5px] uppercase rounded-lg bg-[#2E3A5A]"
+      class="flex justify-center cursor-pointer text-white text-[18px] leading-[28px] font-[590px] py-[12.5px] uppercase rounded-lg bg-[#2E3A5A]"
     >
       Submit
     </button>

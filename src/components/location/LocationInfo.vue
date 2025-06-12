@@ -103,16 +103,20 @@ const refreshLocation = async () => {
 
       <div class="flex flex-row items-center justify-center gap-1">
         <p class="font-normal leading-[100%]">Last Update {{ lastUpdated }}</p>
-        <button @click.prevent="refreshLocation">
+        <button class="cursor-pointer" @click.prevent="refreshLocation">
           <IconRefresh />
         </button>
       </div>
     </div>
     <div class="shrink-0">
-      <button v-if="isLocationAdded && !location?.isMyLocation" @click.prevent="removeLocation">
+      <button
+        class="cursor-pointer"
+        v-if="isLocationAdded && !location?.isMyLocation"
+        @click.prevent="removeLocation"
+      >
         <IconRemove />
       </button>
-      <button v-else-if="!isLocationAdded" @click.prevent="addLocation">
+      <button class="cursor-pointer" v-else-if="!isLocationAdded" @click.prevent="addLocation">
         <IconAdd />
       </button>
     </div>
