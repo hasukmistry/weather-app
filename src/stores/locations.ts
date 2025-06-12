@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { ForecastList, Location, LocationStore } from '@/types'
+import type { ForecastList, ForecastResponse, Location, LocationStore } from '@/types'
 import { getCurrentLocation, fetchRequest } from '@/services/api'
 
 export const useLocationsStore = defineStore('locations', {
@@ -14,8 +14,8 @@ export const useLocationsStore = defineStore('locations', {
         const requestUrl2 = `/api/forecast/daily?lat=${lat}&lon=${lng}&cnt=40`
 
         const [weatherRes, forecastRes] = await Promise.all([
-          fetchRequest(requestUrl1),
-          fetchRequest(requestUrl2),
+          fetchRequest(requestUrl1) as Promise<Location>,
+          fetchRequest(requestUrl2) as Promise<ForecastResponse>,
         ])
 
         // Generate mapping for hourly forecast

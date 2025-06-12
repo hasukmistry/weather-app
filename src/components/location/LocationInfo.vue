@@ -39,10 +39,10 @@ const currentTemperature = computed(() => {
   return Math.round(temp - 273.15)
 })
 const currentWeather = computed(() => props.location?.weather[0]?.main)
-const currentWeatherDescription = computed(() => props.location?.weather[0]?.description)
+const currentWeatherDescription = computed(() => <string>props.location?.weather[0]?.description)
 const lastUpdated = computed(() => {
   if (!props.location) return ''
-  const date = new Date(props.location?.lastUpdated)
+  const date = new Date(<number>props.location?.lastUpdated)
   return date.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',

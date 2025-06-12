@@ -4,7 +4,7 @@ import type { ForecastList } from '@/types'
 import { getWeatherIconClass } from '@/utils/functions'
 
 const props = defineProps<{
-  forecast: ForecastList | null
+  forecast: ForecastList
 }>()
 
 const currentTemperature = computed(() => {

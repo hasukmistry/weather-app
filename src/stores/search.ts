@@ -13,7 +13,7 @@ export const useSearchStore = defineStore('search', {
 
         const results = await fetchRequest(requestUrl)
 
-        this.results = results
+        this.results = <SearchResult[]>results
       } catch (error) {
         console.error('Failed to fetch results:', error)
       }
