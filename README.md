@@ -1,6 +1,7 @@
 # weather-app
 
-This template should help get you started developing with Vue 3 in Vite.
+A mini weather web application that fulfills the following requirements based
+on this [figma design](https://www.figma.com/design/nV6NDPLLANUdvEEsfFOD4S/Frontend-Design-Assignment?node-id=1-1728&t=FhPglhMVK1uCEb1o-1).
 
 ## Recommended IDE Setup
 
@@ -9,6 +10,11 @@ This template should help get you started developing with Vue 3 in Vite.
 ## Type Support for `.vue` Imports in TS
 
 TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+
+## Setting up Environment variables
+
+- Copy .env.example to .env
+- Replace 'your_actual_api_key_here' with api key from [openweathermap](https://openweathermap.org/)
 
 ## Customize configuration
 
