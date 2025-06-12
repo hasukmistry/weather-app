@@ -6,7 +6,16 @@ const props = defineProps<{
   location: Location | null
 }>()
 
-const cardMode = computed(() => 'wa-card--night') //TODO class based on time of day
+const isDaytime = (timestamp: number): boolean => {
+  const date = new Date(timestamp * 1000) // Convert from seconds to milliseconds
+  const hour = date.getHours() // returns 0 - 23
+
+  return hour >= 6 && hour < 18 // Consider 6am to 6pm as daytime
+}
+
+const cardMode = computed(() =>
+  isDaytime(<number>props.location?.dt) ? 'wa-card--day' : 'wa-card--night',
+)
 const currentLocation = computed(() =>
   props.location?.isMyLocation
     ? `${props.location?.name}, ${props.location?.sys.country}`
