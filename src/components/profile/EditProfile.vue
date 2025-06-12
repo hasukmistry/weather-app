@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import { ref, reactive, watch } from 'vue'
+import { useProfileStore } from '@/stores/profile'
+import type { Profile } from '@/types'
+
 import IconBack from '@/components/icons/IconBackBlack.vue'
 import IconProfileEdit from '@/components/icons/IconProfileEdit.vue'
 import FormInput from '@/components/profile/FormInput.vue'
 import FormPhoneInput from '@/components/profile/FormPhoneInput.vue'
-
-import { ref, reactive, watch } from 'vue'
-import { useProfileStore } from '@/stores/profile'
-import type { Profile } from '@/types'
 
 const isReadOnly = ref(true)
 const errors = ref<string[]>([])
