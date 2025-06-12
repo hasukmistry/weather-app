@@ -31,9 +31,8 @@ const setAsSearchedLocation = async (result: SearchResult) => {
         @click="setAsSearchedLocation(result)"
         class="wa-search-result flex w-full text-[14px] font-medium leading-[100%] py-2 border-b border-[#D4D4D4] hover:bg-[#F7F7F9] focus:bg-[#F5F5F5] focus:outline-none"
       >
-        {{ result?.name }}
-        {{ result?.state ? ', ' + result.state : '' }}
-        {{ result?.country ? ', ' + result.country : '' }}
+        {{ result?.name }}{{ result?.state ? ', ' + result.state : ''
+        }}{{ result?.country ? ', ' + result.country : '' }}
       </button>
     </li>
   </ul>
