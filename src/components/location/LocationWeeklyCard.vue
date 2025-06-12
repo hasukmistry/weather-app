@@ -2,24 +2,24 @@
 import { computed } from 'vue'
 import type { ForecastList } from '@/types'
 import IconRight from '@/components/icons/IconRight.vue'
-import { getWeatherIconClass } from '@/utils/functions'
+import { getTemperatureInCelcius, getWeatherIconClass, getFormattedDay } from '@/utils/functions'
 
 const props = defineProps<{
   forecast: ForecastList | null
+  timezone: number
 }>()
 
 const currentTemperature = computed(() => {
-  const temp = props.forecast?.main.temp ?? 0
-  return Math.round(temp - 273.15)
+  return getTemperatureInCelcius(props.forecast?.main.temp ?? 0)
 })
+
 const currentWeather = computed(() => props.forecast?.weather[0]?.main)
+
 const currentFormattedDay = computed(() => {
   if (!props.forecast) return ''
-  const date = new Date(props.forecast?.dt_txt)
-  const dayIndex = date.getDay()
-  const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-  return weekdays[dayIndex]
+  return getFormattedDay(props.forecast?.dt_txt, props.timezone)
 })
+
 const currentWeatherIconClass = computed(() => {
   const weatherDescription = props.forecast?.weather[0]?.description?.toLowerCase()
 

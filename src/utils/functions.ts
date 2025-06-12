@@ -5,7 +5,10 @@ export const getWeatherIconClass = (weatherDescription: string): string => {
     return 'cloudy'
   } else if (weatherDescription.includes('heavy rain')) {
     return 'heavy_rain'
-  } else if (weatherDescription.includes('light rain')) {
+  } else if (
+    weatherDescription.includes('light rain') ||
+    weatherDescription.includes('moderate rain')
+  ) {
     return 'moderate_rain'
   } else if (weatherDescription.includes('thunder')) {
     return 'thunder'
@@ -68,4 +71,18 @@ export const getLastUpdatedTime = (timestamp: number): string => {
     minute: 'numeric',
     hour12: true,
   })
+}
+
+export const getFormattedDay = (datetimeStr: string, timezone: number): string => {
+  // Parse as UTC date
+  const utcDate = new Date(datetimeStr.replace(' ', 'T') + 'Z')
+
+  // Shift by timezone offset
+  const localDate = new Date(utcDate.getTime() + timezone * 1000)
+
+  const dayIndex = localDate.getDay()
+
+  const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+  return weekdays[dayIndex]
 }
