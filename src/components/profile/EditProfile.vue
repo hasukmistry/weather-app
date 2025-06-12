@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import IconBack from '@/components/icons/IconBackBlack.vue'
 import IconProfileEdit from '@/components/icons/IconProfileEdit.vue'
-import IconCountry from '@/components/icons/IconCountry.vue'
+import FormInput from '@/components/profile/FormInput.vue'
+import FormPhoneInput from '@/components/profile/FormPhoneInput.vue'
 
 import { ref, reactive, watch } from 'vue'
 import { useProfileStore } from '@/stores/profile'
@@ -109,54 +110,26 @@ const submitProfile = () => {
   </div>
   <form class="flex flex-col px-4 py-5" :class="errors.length ? '' : 'mt-[31px] '">
     <div class="wa-form-controls flex flex-col min-h-[380px] gap-4">
-      <div
-        class="wa-form-control flex flex-col rounded-lg px-1 py-[9px]"
-        :class="isReadOnly ? 'bg-[#F5F5F5]' : 'bg-[#FFFFFF] border border-[#F5F5F5]'"
-      >
-        <label class="text-[8px] leading-[100%]" for="fullName">Full name</label>
-        <input
-          id="fullName"
-          type="text"
-          class="text-[14px] mt-2 outline-0 leading-[100%] font-[510px]"
-          v-model="localProfile.fullName"
-          :disabled="isReadOnly"
-        />
-      </div>
+      <FormInput
+        v-model="localProfile.fullName"
+        id="fullName"
+        name="Full name"
+        :isReadOnly="isReadOnly"
+      ></FormInput>
 
-      <div
-        class="wa-form-control flex flex-col bg-[#F5F5F5] rounded-lg px-1 py-[9px]"
-        :class="isReadOnly ? 'bg-[#F5F5F5]' : 'bg-[#FFFFFF] border border-[#F5F5F5]'"
-      >
-        <label class="text-[8px] leading-[100%]" for="email">Email</label>
-        <input
-          id="email"
-          type="text"
-          class="text-[14px] mt-2 outline-0 leading-[100%] font-[510px]"
-          v-model="localProfile.email"
-          :disabled="isReadOnly"
-        />
-      </div>
+      <FormInput
+        v-model="localProfile.email"
+        id="email"
+        name="Email"
+        :isReadOnly="isReadOnly"
+      ></FormInput>
 
-      <div
-        class="wa-form-control flex flex-col bg-[#F5F5F5] rounded-lg px-1 py-[9px]"
-        :class="isReadOnly ? 'bg-[#F5F5F5]' : 'bg-[#FFFFFF] border border-[#F5F5F5]'"
-      >
-        <label class="text-[8px] leading-[100%]" for="phone">Phone Number</label>
-        <div class="flex justify-center items-center gap-1">
-          <div class="shrink-0 mt-1">
-            <IconCountry />
-          </div>
-          <div class="flex-1">
-            <input
-              id="phone"
-              type="text"
-              class="text-[14px] mt-2 outline-0 leading-[100%] font-[510px]"
-              v-model="localProfile.phone"
-              :disabled="isReadOnly"
-            />
-          </div>
-        </div>
-      </div>
+      <FormPhoneInput
+        v-model="localProfile.phone"
+        id="phone"
+        name="Phone Number"
+        :isReadOnly="isReadOnly"
+      ></FormPhoneInput>
     </div>
 
     <button
