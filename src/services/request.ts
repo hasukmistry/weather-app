@@ -12,8 +12,6 @@ interface FetchOptions extends RequestInit {
 }
 
 async function request<T = unknown>(requestUrl: string, options: FetchOptions = {}): Promise<T> {
-  const url = `${requestUrl}&appid=${import.meta.env.VITE_OPEN_WEATHER_API_KEY}`
-
   const config: RequestInit = {
     ...options,
     method: options.method || 'GET',
@@ -28,7 +26,7 @@ async function request<T = unknown>(requestUrl: string, options: FetchOptions = 
     config.body = JSON.stringify(config.body)
   }
 
-  const response = await fetch(url, config)
+  const response = await fetch(requestUrl, config)
 
   if (!response.ok) {
     const errorText = await response.text()
