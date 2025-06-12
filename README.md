@@ -1,4 +1,4 @@
-# weather-app
+# Weather App
 
 A mini weather web application that fulfills the following requirements based
 on this [figma design](https://www.figma.com/design/nV6NDPLLANUdvEEsfFOD4S/Frontend-Design-Assignment?node-id=1-1728&t=FhPglhMVK1uCEb1o-1).
@@ -6,6 +6,10 @@ on this [figma design](https://www.figma.com/design/nV6NDPLLANUdvEEsfFOD4S/Front
 ## Recommended IDE Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+
+## Recommended Node and Npm versions
+
+This app has been tested with Node v22.16.0 and Npm 11.4.1
 
 ## Type Support for `.vue` Imports in TS
 
